@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}数据统计模块{% endblock %}
+{% block header %}数据统计模块{% endblock %}
+{% block content %}
+    <div class="stats">
+        <div class="stat-card">
+            <h3>{{ total_events }}</h3>
+            <p>攻击事件总数</p>
+        </div>
+        <div class="stat-card">
+            <h3>{{ total_attackers }}</h3>
+            <p>攻击者数量</p>
+        </div>
+        <div class="stat-card">
+            <h3>{{ latest_event.timestamp if latest_event else '—' }}</h3>
+            <p>最新事件时间</p>
+        </div>
+    </div>
+
+    <div class="operations">
+        <h3>操作</h3>
+        <div class="btn-group">
+            <form method="post" action="{{ url_for('admin.simulate_attack') }}">
+                {{ csrf_token() }}
+                <button type="submit" class="btn btn-success">模拟一条攻击数据</button>
+            </form>
+            <a class="btn btn-primary" href="{{ url_for('admin.export_stats') }}">导出统计为TXT</a>
+        </div>
+        <small style="opacity:0.7;display:block;margin-top:8px;">最新更新时间：{{ (latest_event.timestamp if latest_event else None) or '无' }}</small>
+    </div>
+{% endblock %}
+

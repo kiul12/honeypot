@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据库</title>
+    <link rel="stylesheet" href="../static/css/all.css">    <!-- 链接css样式 -->
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h2>数据库管理</h2>
+            <nav>
+                <a href="#" class="nav-item active">首页</a>
+            </nav>
+        </div>
+
+        <div class="main-content">
+            <div class="header">
+                <h1>数据库管理面板</h1>
+            </div>
+
+            <!-- 表单区域 -->
+            <div class="form-container" id="formContainer">
+                <h3>新建数据库</h3>
+                <form>
+                    <div class="form-group">
+                        <label>数据库名称：</label>
+                        <input type="text" placeholder="请输入数据库名称" required>
+                    </div>
+                    <div class="form-group">
+                        <label>数据表单：</label>
+                        <input type="text" placeholder="请输入数据表单名称">
+                    </div>
+                    <div class="form-group">
+                        <label>数据行：</label>
+                        <input type="text" placeholder="请输入数据行名称">
+                    </div>
+                    <button type="submit" class="btn btn-primary">提交</button>
+                    <button type="button" class="btn btn-default" onclick="hideForm()">取消</button>
+                </form>
+            </div>
+
+            <!--数据库列表区域（预留） -->
+            <div class="table-container" id="dbList">
+                <h3>数据库列表</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>数据库名称</th>
+                            <th>创建时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- 动态插入数据库行 -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 操作按钮区域 -->
+            <div class="operations">
+                <h3>数据操作</h3>
+                <div class="btn-group">
+                    <button class="btn btn-success" onclick="showForm()">增加表单</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function showForm() {
+            document.getElementById('formContainer').style.display = 'block';
+        }
+
+        function hideForm() {
+            document.getElementById('formContainer').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

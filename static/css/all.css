@@ -1,0 +1,264 @@
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e6e6ff;
+            min-height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 200px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            padding: 20px;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar h2 {
+            color: #ffffff;
+            margin-bottom: 30px;
+            font-size: 20px;
+            font-weight: 500;
+        }
+
+        .nav-item {
+            display: block;
+            padding: 12px 16px;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+        }
+
+        .nav-item.active {
+            background: rgba(86, 124, 228, 0.25);
+            color: #ffffff;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 30px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            padding: 20px 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header h1 {
+            color: #ffffff;
+            font-size: 24px;
+            font-weight: 500;
+        }
+
+        .operations {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .operations h3 {
+            color: #ffffff;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: rgba(86, 124, 228, 0.7);
+        }
+
+        .btn-success {
+            background: rgba(46, 204, 113, 0.7);
+        }
+
+        .btn-danger {
+            background: rgba(231, 76, 60, 0.7);
+        }
+
+        .btn-info {
+            background: rgba(52, 152, 219, 0.7);
+        }
+
+        .table-container {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        th {
+            background: rgba(255, 255, 255, 0.12);
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .form-container {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            display: none;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            font-size: 14px;
+            background: rgba(0, 0, 0, 0.15);
+            color: #ffffff;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: rgba(86, 124, 228, 0.7);
+        }
+
+        .sidebar{
+            position:fixed;
+            left:0;
+            top:0;
+            height:100vh;
+            width:200px;
+            background:rgba(255,255,255,.08);
+            padding:20px;
+            border-right:1px solid rgba(255,255,255,.1);
+            display:flex;
+            flex-direction:column;
+          }
+          .main-content{
+            margin-left:200px;
+            padding:30px;
+            min-height:100vh;
+          }
+          .nav-bottom{
+            margin-top:auto;
+            padding:0;
+          }
+          .settings-trigger{
+            position:relative;
+            color:rgba(255,255,255,.7);
+            cursor:pointer;
+            font-size:14px;
+          }
+          .settings-card{
+            position:absolute;
+            bottom:100%;
+            left:0;
+            width:160px;
+            background:rgba(30,35,60,.95);
+            border-radius:6px;
+            box-shadow:0 4px 12px rgba(0,0,0,.3);
+            display:none;
+            flex-direction:column;
+            padding:8px 0;
+          }
+          .settings-trigger:hover .settings-card{display:flex;}
+          .settings-card a{
+            padding:8px 16px;
+            color:#e6e6ff;
+            text-decoration:none;
+            font-size:13px;
+          }
+          .settings-card a:hover{background:rgba(255,255,255,.1);}
+          
+          /* 仪表盘不左右动 */
+          .dash-wrapper{
+            max-width:1200px;
+            margin:0 auto;
+            padding:20px;
+          }
+          .dash-grid{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+            gap:20px;
+          }
+          .dash-card{
+            background:rgba(255,255,255,.08);
+            padding:20px;
+            border-radius:8px;
+            border:1px solid rgba(255,255,255,.1);
+          }
+          .dash-card.full{grid-column:1/-1;}
+          .dash-card h4{margin-bottom:10px;color:#fff;}
+          .update-time{font-size:12px;color:rgba(255,255,255,.7);margin-left:10px;}
+          .simple-table{width:100%;border-collapse:collapse;font-size:14px;}
+          .simple-table th,.simple-table td{padding:8px;border-bottom:1px solid rgba(255,255,255,.1);}
+          .simple-table th{background:rgba(255,255,255,.05);}

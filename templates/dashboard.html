@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% block title %}仪表盘{% endblock %}
+{% block header %}蜜罐管理仪表盘{% endblock %}
+{% block content %}
+<!-- 不左右晃动外壳 -->
+<div class="dash-wrapper">
+  <div class="dash-grid">
+    <!-- 统计卡片 -->
+    <div class="stat-card"><h3>{{ total_attacks }}</h3><p>总攻击次数</p></div>
+    <div class="stat-card"><h3>{{ unique_attackers }}</h3><p>攻击者数量</p></div>
+    <div class="stat-card"><h3>{{ attack_types|length }}</h3><p>攻击类型</p></div>
+    <div class="stat-card"><h3>{{ country_stats|length }}</h3><p>涉及国家</p></div>
+
+    <!-- 操作区 -->
+    <div class="dash-card">
+      <h4>快捷操作</h4>
+      <form method="post" action="{{ url_for('admin.simulate_attack') }}" style="display:inline;">
+        {{ csrf_token() }}
+        <button type="submit" class="btn btn-success">🧪 模拟攻击</button>
+      </form>
+      <a href="{{ url_for('admin.export_stats') }}" class="btn btn-primary">📊 导出数据</a>
+      <small class="update-time">最新更新：{{ latest_update.timestamp if latest_update else '无数据' }}</small>
+    </div>
+
+    <!-- Top 排行 -->
+    <div class="dash-card">
+      <h4>🔥 Top 攻击类型</h4>
+      <ol>
+        {% for attack_type, count in attack_types[:3] %}
+        <li>{{ attack_type or '未知' }}: {{ count }}次</li>
+        {% endfor %}
+      </ol>
+    </div>
+
+    <div class="dash-card">
+      <h4>🌍 Top 攻击地区</h4>
+      <ol>
+        {% for country, count in country_stats[:3] %}
+        <li>{{ country or '未知' }}: {{ count }}次</li>
+        {% endfor %}
+      </ol>
+    </div>
+
+    <!-- 图表 -->
+    <div class="dash-card full">
+      <h4>攻击类型分布</h4>
+      <div id="attack-types-chart" style="height:300px;"></div>
+    </div>
+    <div class="dash-card full">
+      <h4>地区分布</h4>
+      <div id="country-chart" style="height:300px;"></div>
+    </div>
+
+    <!-- 最近事件 -->
+    <div class="dash-card full">
+      <h4>最近攻击事件</h4>
+      <table class="simple-table">
+        <thead><tr><th>时间</th><th>IP</th><th>方法</th><th>路径</th><th>级别</th></tr></thead>
+        <tbody>
+          {% for e in recent_attacks %}
+          <tr>
+            <td>{{ e.timestamp.strftime('%m-%d %H:%M') if e.timestamp else '—' }}</td>
+            <td>{{ e.ip_address }}</td>
+            <td>{{ e.method }}</td>
+            <td>{{ e.path[:30] + '...' if e.path and e.path|length > 30 else e.path or '—' }}</td>
+            <td><span class="severity-{{ e.severity or 'unknown' }}">{{ e.severity or '—' }}</span></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ECharts 引用与初始化 -->
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+<script>
+const attackTypesData = {{ attack_types | tojson }};
+const countryData = {{ country_stats | tojson }};
+// 攻击类型饼图
+const typeChart = echarts.init(document.getElementById('attack-types-chart'));
+typeChart.setOption({
+  tooltip: {trigger:'item',formatter:'{b}: {c} ({d}%)'},
+  series:[{type:'pie',radius:'50%',data:attackTypesData.map(i=>({value:i[1],name:i[0]||'未知'}))}]
+});
+// 地区柱状图
+const countryChart = echarts.init(document.getElementById('country-chart'));
+countryChart.setOption({
+  tooltip:{trigger:'axis'},
+  xAxis:{type:'category',data:countryData.map(i=>i[0]||'未知')},
+  yAxis:{type:'value'},
+  series:[{type:'bar',data:countryData.map(i=>i[1]),itemStyle:{color:'#667eea'}}]
+});
+window.addEventListener('resize',()=>{typeChart.resize();countryChart.resize();});
+</script>
+
+{% endblock %}

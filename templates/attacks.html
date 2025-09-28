@@ -1,0 +1,178 @@
+{% extends 'base.html' %}
+{% block title %}攻击事件{% endblock %}
+{% block header %}攻击事件{% endblock %}
+{% block content %}
+<!-- 筛选区域 -->
+<div class="filter-section">
+    <form method="get" class="filter-form">
+        <div class="filter-group">
+            <label>IP地址:</label>
+            <input type="text" name="ip" value="{{ ip }}" placeholder="输入IP地址">
+        </div>
+        <div class="filter-group">
+            <label>方法:</label>
+            <select name="method">
+                <option value="">全部</option>
+                <option value="GET" {% if method == 'GET' %}selected{% endif %}>GET</option>
+                <option value="POST" {% if method == 'POST' %}selected{% endif %}>POST</option>
+                <option value="PUT" {% if method == 'PUT' %}selected{% endif %}>PUT</option>
+                <option value="DELETE" {% if method == 'DELETE' %}selected{% endif %}>DELETE</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">筛选</button>
+        <a href="{{ url_for('admin.attacks') }}" class="btn btn-secondary">清除</a>
+    </form>
+</div>
+
+<!-- 攻击事件列表 -->
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>时间</th>
+                <th>IP</th>
+                <th>方法</th>
+                <th>路径</th>
+                <th>服务</th>
+                <th>签名</th>
+                <th>严重级别</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for e in events %}
+            <tr>
+                <td>{{ e.id }}</td>
+                <td>{{ e.timestamp.strftime('%m-%d %H:%M:%S') if e.timestamp else '—' }}</td>
+                <td>{{ e.ip_address }}</td>
+                <td>{{ e.method }}</td>
+                <td>{{ e.path[:50] + '...' if e.path and e.path|length > 50 else e.path or '—' }}</td>
+                <td>{{ e.honeypot_service or '—' }}</td>
+                <td>{{ e.signature or '—' }}</td>
+                <td><span class="severity-{{ e.severity or 'unknown' }}">{{ e.severity or '—' }}</span></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <!-- 分页 -->
+    {% if pagination %}
+    <div class="pagination">
+        {% if pagination.has_prev %}
+            <a href="{{ url_for('admin.attacks', page=pagination.prev_num, ip=ip, method=method) }}" class="btn btn-sm">上一页</a>
+        {% endif %}
+        
+        <span class="pagination-info">
+            第 {{ pagination.page }} 页，共 {{ pagination.pages }} 页，总计 {{ pagination.total }} 条记录
+        </span>
+        
+        {% if pagination.has_next %}
+            <a href="{{ url_for('admin.attacks', page=pagination.next_num, ip=ip, method=method) }}" class="btn btn-sm">下一页</a>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+
+<style>
+.filter-section {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.filter-form {
+    display: flex;
+    gap: 15px;
+    align-items: end;
+    flex-wrap: wrap;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.filter-group label {
+    font-weight: 500;
+    color: #333;
+}
+
+.filter-group input,
+.filter-group select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-top: 20px;
+    padding: 15px;
+}
+
+.pagination-info {
+    color: #666;
+    font-size: 14px;
+}
+
+.severity-high {
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+.severity-medium {
+    color: #f39c12;
+    font-weight: bold;
+}
+
+.severity-low {
+    color: #27ae60;
+    font-weight: bold;
+}
+
+.severity-unknown {
+    color: #95a5a6;
+}
+
+[data-theme="dark"] .filter-section {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .filter-group label {
+    color: #ffffff;
+}
+
+[data-theme="dark"] .filter-group input,
+[data-theme="dark"] .filter-group select {
+    background: rgba(0, 0, 0, 0.15);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="dark"] .pagination-info {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+@media (max-width: 768px) {
+    .filter-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .pagination {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+</style>
+{% endblock %}
+
+

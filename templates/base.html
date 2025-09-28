@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}蜜罐后台{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/all.css') }}">
+</head>
+<body>
+    <!-- 主题切换：只保留一个按钮，无动画 -->
+    <div class="theme-toggle">
+        <button id="theme-btn" class="btn-icon">🌓</button>
+    </div>
+
+    <div class="container">
+        <div class="sidebar">
+            <h2>蜜罐管理</h2>
+            <nav>
+                <a href="{{ url_for('admin.dashboard') }}" class="nav-item">仪表盘</a>
+                <a href="{{ url_for('admin.attacks') }}" class="nav-item">攻击事件</a>
+                <a href="{{ url_for('admin.attackers') }}" class="nav-item">攻击者画像</a>
+                <a href="{{ url_for('admin.stats') }}" class="nav-item">数据统计</a>
+                <a href="{{ url_for('admin.database') }}" class="nav-item">数据库</a>
+                <a href="{{ url_for('admin.map') }}" class="nav-item">可视化地图</a>
+            </nav>
+
+            <!-- 图四：最左下角文字「设置」+「退出」 -->
+            <div class="nav-bottom">
+                <a href="{{ url_for('admin.settings') }}" class="nav-item">设置</a>
+                <a href="{{ url_for('auth.logout') }}" class="nav-item">退出</a>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="header">
+                <h1>{% block header %}{% endblock %}</h1>
+            </div>
+            <div class="content">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </div>
+
+    <!-- 极简主题切换（无动画） -->
+    <script>
+        const btn = document.getElementById('theme-btn');
+        const html = document.documentElement;
+        btn.addEventListener('click', () => {
+            const now = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', now);
+            localStorage.setItem('theme', now);
+        });
+    </script>
+</body>
+</html>
